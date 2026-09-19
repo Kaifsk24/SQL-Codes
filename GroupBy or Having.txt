@@ -1,0 +1,79 @@
+---------------------------------------------------
+-- Create Employee table
+---------------------------------------------------
+
+CREATE TABLE Employee (
+emp_id INT PRIMARY KEY,
+name VARCHAR(50),
+salary DECIMAL(10,2),
+department VARCHAR(50)
+);
+
+---------------------------------------------------
+-- Insert sample data
+---------------------------------------------------
+
+INSERT INTO Employee VALUES
+(1, 'Aman', 45000, 'IT'),
+(2, 'Riya', 55000, 'HR'),
+(3, 'Arjun', 60000, 'Finance'),
+(4, 'Sneha', 75000, 'IT'),
+(5, 'Anita', 50000, 'HR'),
+(6, 'Rahul', 80000, 'Finance');
+
+---------------------------------------------------
+-- a) Total salary paid in each department
+---------------------------------------------------
+
+SELECT department,
+SUM(salary) AS Total_Salary
+FROM Employee
+GROUP BY department;
+
+---------------------------------------------------
+-- b) Average salary in each department
+---------------------------------------------------
+
+SELECT department,
+AVG(salary) AS Average_Salary
+FROM Employee
+GROUP BY department;
+
+---------------------------------------------------
+-- c) Maximum and Minimum salary in each department
+---------------------------------------------------
+
+SELECT department,
+MAX(salary) AS Maximum_Salary,
+MIN(salary) AS Minimum_Salary
+FROM Employee
+GROUP BY department;
+
+---------------------------------------------------
+-- d) Count employees in each department
+---------------------------------------------------
+
+SELECT department,
+COUNT(*) AS Employee_Count
+FROM Employee
+GROUP BY department;
+
+---------------------------------------------------
+-- e) Departments where average salary > 50000
+---------------------------------------------------
+
+SELECT department,
+AVG(salary) AS Average_Salary
+FROM Employee
+GROUP BY department
+HAVING AVG(salary) > 50000;
+
+---------------------------------------------------
+-- f) Department with the highest total salary
+---------------------------------------------------
+
+SELECT Department, SUM(Salary) AS Total_Salary
+FROM Employee
+GROUP BY Department
+ORDER BY Total_Salary DESC
+LIMIT 1;

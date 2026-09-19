@@ -1,0 +1,102 @@
+CREATE TABLE Employee (
+emp_id INT PRIMARY KEY,
+emp_name VARCHAR(50),
+salary INT,
+department VARCHAR(30)
+);
+
+INSERT INTO Employee VALUES
+(1, 'Rahul', 30000, 'IT'),
+(2, 'Sneha', 25000, 'HR'),
+(3, 'Aman', 40000, 'Sales');
+
+
+select * from Employee;
+
+INSERT INTO Employee
+VALUES (4, 'Priya', 35000, 'Finance');
+
+UPDATE Employee
+SET salary = 45000
+WHERE emp_id = 1;
+
+
+DELETE FROM Employee
+WHERE emp_id = 2;
+
+
+SELECT emp_name, salary, salary + 5000 AS new_salary
+FROM Employee;
+
+SELECT *
+FROM Employee
+WHERE salary > 30000
+AND department = 'IT';
+
+SELECT emp_name FROM Employee
+WHERE department = 'IT'
+
+UNION
+
+SELECT emp_name FROM Employee
+WHERE department = 'Sales';
+
+
+SELECT *
+FROM Employee
+WHERE emp_name LIKE 'P%';
+
+SELECT UPPER(emp_name)
+FROM Employee;
+
+CREATE USER 'student1'@'localhost'
+IDENTIFIED BY 'pass123';
+
+GRANT SELECT, INSERT
+ON Employee
+TO 'student1'@'localhost';
+
+SHOW GRANTS FOR 'student1'@'localhost';
+
+REVOKE INSERT
+ON Employee
+FROM 'student1'@'localhost';
+
+SHOW GRANTS FOR 'student1'@'localhost';
+
+CREATE ROLE manager_role;
+
+GRANT SELECT, UPDATE
+ON Employee
+TO manager_role;
+
+GRANT manager_role
+TO 'student1'@'localhost';
+
+SHOW GRANTS FOR 'student1'@'localhost';
+
+
+
+START TRANSACTION;
+
+UPDATE Employee
+SET salary = salary + 2000
+WHERE emp_id = 1;
+
+SELECT * FROM Employee;
+
+SAVEPOINT sp1;
+
+UPDATE Employee
+SET salary = salary + 1000
+WHERE emp_id = 3;
+
+SELECT * FROM Employee;
+
+ROLLBACK TO sp1;
+
+SELECT * FROM Employee;
+
+COMMIT;
+
+SELECT * FROM Employee;

@@ -1,0 +1,106 @@
+---------------------------------------------------
+-- Create Supplier table
+---------------------------------------------------
+
+CREATE TABLE Supplier (
+SNO INT PRIMARY KEY,
+Sname VARCHAR(50),
+Status VARCHAR(20),
+City VARCHAR(50)
+);
+
+---------------------------------------------------
+-- Create Parts table
+---------------------------------------------------
+
+CREATE TABLE Parts (
+PNO INT PRIMARY KEY,
+Pname VARCHAR(50),
+Color VARCHAR(20),
+Weight DECIMAL(5,2),
+City VARCHAR(50)
+);
+
+---------------------------------------------------
+-- Create Shipments table
+---------------------------------------------------
+
+CREATE TABLE Shipments (
+SNO INT,
+PNO INT,
+QTY INT,
+FOREIGN KEY (SNO) REFERENCES Supplier(SNO),
+FOREIGN KEY (PNO) REFERENCES Parts(PNO)
+);
+
+---------------------------------------------------
+-- Insert sample records into Supplier
+---------------------------------------------------
+
+INSERT INTO Supplier VALUES
+(1, 'Amit', 'Active', 'Mumbai'),
+(2, 'Rohan', 'Active', 'Delhi'),
+(3, 'Karan', 'Inactive', 'Mumbai');
+
+---------------------------------------------------
+-- Insert sample records into Parts
+---------------------------------------------------
+
+INSERT INTO Parts VALUES
+(1692, 'Bolt', 'Green', 12.5, 'Pune'),
+(2001, 'Nut', 'Red', 5.0, 'Delhi'),
+(3001, 'Screw', 'Blue', 3.5, 'Mumbai');
+
+---------------------------------------------------
+-- Insert sample records into Shipments
+---------------------------------------------------
+
+INSERT INTO Shipments VALUES
+(1, 1692, 120),
+(2, 2001, 200),
+(3, 1692, 180),
+(1, 3001, 140);
+
+---------------------------------------------------
+-- i) Find shipment information where quantity < 157
+---------------------------------------------------
+
+SELECT S.SNO,S.Sname,P.PNO,P.Pname,SH.QTY
+FROM Supplier S
+JOIN Shipments SH
+ON S.SNO = SH.SNO
+JOIN Parts P
+ON SH.PNO = P.PNO
+WHERE SH.QTY < 157;
+
+---------------------------------------------------
+-- ii) Suppliers who made shipments with quantity
+-- greater than average quantity
+---------------------------------------------------
+
+SELECT S.SNO,S.Sname,P.PNO,P.Pname
+FROM Supplier S
+JOIN Shipments SH
+ON S.SNO = SH.SNO
+JOIN Parts P
+ON SH.PNO = P.PNO
+WHERE SH.QTY > (
+SELECT AVG(QTY)
+FROM Shipments
+);
+
+---------------------------------------------------
+-- iii) Aggregate quantity of part number 1692
+-- having green color shipped by suppliers
+-- residing in Mumbai
+---------------------------------------------------
+
+SELECT SUM(SH.QTY) AS Total_Quantity
+FROM Supplier S
+JOIN Shipments SH
+ON S.SNO = SH.SNO
+JOIN Parts P
+ON SH.PNO = P.PNO
+WHERE P.PNO = 1692
+AND P.Color = 'Green'
+AND S.City = 'Mumbai';

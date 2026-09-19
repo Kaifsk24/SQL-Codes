@@ -1,0 +1,54 @@
+---------------------------------------------------
+-- Create Student_fee_details table
+---------------------------------------------------
+
+CREATE TABLE Student_fee_details (
+rollno INT PRIMARY KEY,
+name VARCHAR(50),
+fee_deposited DECIMAL(10,2),
+date DATE
+);
+
+---------------------------------------------------
+-- Create Backup table to store old values
+---------------------------------------------------
+
+CREATE TABLE Student_fee_backup (
+rollno INT,
+name VARCHAR(50),
+fee_deposited DECIMAL(10,2),
+date DATE,
+updated_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+---------------------------------------------------
+-- Create Trigger to preserve old values
+-- before updating Student_fee_details
+---------------------------------------------------
+
+CREATE TRIGGER trg_fee_backup
+BEFORE UPDATE
+ON Student_fee_details
+FOR EACH ROW
+INSERT INTO Student_fee_backup
+(
+rollno,
+name,
+fee_deposited,
+date
+)
+VALUES
+(
+OLD.rollno,
+OLD.name,
+OLD.fee_deposited,
+OLD.date
+);
+
+---------------------------------------------------
+-- Example Update
+---------------------------------------------------
+
+UPDATE Student_fee_details
+SET fee_deposited = 25000
+WHERE rollno = 1;

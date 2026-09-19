@@ -1,0 +1,97 @@
+---------------------------------------------------
+-- Create DIRECTOR table
+---------------------------------------------------
+
+CREATE TABLE DIRECTOR (
+Dir_Id INT PRIMARY KEY,
+Dir_Name VARCHAR(50)
+);
+
+---------------------------------------------------
+-- Create MOVIES table
+---------------------------------------------------
+
+CREATE TABLE MOVIES (
+Mov_Id INT PRIMARY KEY,
+Mov_Title VARCHAR(100),
+Mov_Year INT,
+Dir_Id INT,
+FOREIGN KEY (Dir_Id) REFERENCES DIRECTOR(Dir_Id)
+);
+
+---------------------------------------------------
+-- Create RATING table
+---------------------------------------------------
+
+CREATE TABLE RATING (
+MOV_Id INT,
+Rev_Stars INT,
+FOREIGN KEY (MOV_Id) REFERENCES MOVIES(Mov_Id)
+);
+
+---------------------------------------------------
+-- Insert sample records into DIRECTOR
+---------------------------------------------------
+
+INSERT INTO DIRECTOR VALUES
+(1, 'RAJ KAPOOR'),
+(2, 'Steven Spielberg'),
+(3, 'Christopher Nolan');
+
+---------------------------------------------------
+-- Insert sample records into MOVIES
+---------------------------------------------------
+
+INSERT INTO MOVIES VALUES
+(101, 'Awara', 1951, 1),
+(102, 'Shree 420', 1955, 1),
+(103, 'Jurassic Park', 1993, 2),
+(104, 'Inception', 2010, 3);
+
+---------------------------------------------------
+-- Insert sample records into RATING
+---------------------------------------------------
+
+INSERT INTO RATING VALUES
+(101, 8),
+(102, 7),
+(103, 6),
+(104, 9);
+
+---------------------------------------------------
+-- i) List titles of movies directed by RAJ KAPOOR
+---------------------------------------------------
+
+SELECT M.Mov_Title
+FROM MOVIES M
+JOIN DIRECTOR D
+ON M.Dir_Id = D.Dir_Id
+WHERE D.Dir_Name = 'RAJ KAPOOR';
+
+---------------------------------------------------
+-- ii) Display movie names and stars
+-- sorted by movie title and higher stars first
+---------------------------------------------------
+
+SELECT M.Mov_Title,
+R.Rev_Stars
+FROM MOVIES M
+JOIN RATING R
+ON M.Mov_Id = R.MOV_Id
+ORDER BY M.Mov_Title ASC,
+R.Rev_Stars DESC;
+
+---------------------------------------------------
+-- iii) Assign rating 9 to movies directed by
+-- Steven Spielberg
+---------------------------------------------------
+
+UPDATE RATING
+SET Rev_Stars = 9
+WHERE MOV_Id IN (
+SELECT M.Mov_Id
+FROM MOVIES M
+JOIN DIRECTOR D
+ON M.Dir_Id = D.Dir_Id
+WHERE D.Dir_Name = 'Steven Spielberg'
+);

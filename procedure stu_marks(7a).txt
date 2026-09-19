@@ -1,0 +1,78 @@
+---------------------------------------------------
+-- Create Stud_Marks table
+---------------------------------------------------
+
+CREATE TABLE Stud_Marks (
+Roll_no INT PRIMARY KEY,
+name VARCHAR(50),
+total_marks INT,
+category VARCHAR(50)
+);
+
+---------------------------------------------------
+-- Insert sample records
+---------------------------------------------------
+
+INSERT INTO Stud_Marks VALUES
+(1, 'Amit', 1200, NULL),
+(2, 'Sneha', 950, NULL),
+(3, 'Rahul', 850, NULL),
+(4, 'Priya', 780, NULL);
+
+---------------------------------------------------
+-- Stored Procedure using Cursor
+-- for student categorization
+---------------------------------------------------
+
+DELIMITER $$
+
+CREATE PROCEDURE Categorize_Students()
+BEGIN
+DECLARE done INT DEFAULT 0;
+DECLARE r_no INT;
+DECLARE marks INT;
+DECLARE stud_cursor CURSOR FOR
+SELECT Roll_no, total_marks
+FROM Stud_Marks;
+DECLARE CONTINUE HANDLER FOR NOT FOUND
+SET done = 1;
+OPEN stud_cursor;
+read_loop: LOOP
+FETCH stud_cursor INTO r_no, marks;
+IF done = 1 THEN
+LEAVE read_loop;
+END IF;
+IF marks >= 990 AND marks <= 1500 THEN
+UPDATE Stud_Marks
+SET category = 'Distinction'
+WHERE Roll_no = r_no;
+ELSEIF marks >= 900 AND marks <= 989 THEN
+UPDATE Stud_Marks
+SET category = 'First Class'
+WHERE Roll_no = r_no;
+ELSEIF marks >= 825 AND marks <= 899 THEN
+UPDATE Stud_Marks
+SET category = 'Higher Second Class'
+WHERE Roll_no = r_no;
+ELSE
+UPDATE Stud_Marks
+SET category = 'No Class'
+WHERE Roll_no = r_no;
+END IF;
+END LOOP;
+CLOSE stud_cursor;
+END$$
+
+DELIMITER ;
+
+---------------------------------------------------
+-- Execute Stored Procedure
+---------------------------------------------------
+
+CALL Categorize_Students();
+
+---------------------------------------------------
+-- Display updated table
+---------------------------------------------------
+
+SELECT * FROM Stud_Marks;

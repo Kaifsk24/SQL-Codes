@@ -1,0 +1,92 @@
+---------------------------------------------------
+-- Create Emp table
+---------------------------------------------------
+
+CREATE TABLE Emp (
+Emp_no INT PRIMARY KEY,
+Emp_name VARCHAR(50),
+Dept_no INT
+);
+
+---------------------------------------------------
+-- Create Dept table
+---------------------------------------------------
+
+CREATE TABLE Dept (
+Dept_no INT PRIMARY KEY,
+Dept_name VARCHAR(50)
+);
+
+---------------------------------------------------
+-- Create Address table
+---------------------------------------------------
+
+CREATE TABLE Address (
+Dept_name VARCHAR(50),
+Dept_location VARCHAR(50)
+);
+
+---------------------------------------------------
+-- Insert sample records into Dept
+---------------------------------------------------
+
+INSERT INTO Dept VALUES
+(101, 'HR'),
+(102, 'IT'),
+(103, 'Finance'),
+(104, 'Marketing');
+
+---------------------------------------------------
+-- Insert sample records into Emp
+---------------------------------------------------
+
+INSERT INTO Emp VALUES
+(1, 'Ram', 102),
+(2, 'Amit', 101),
+(3, 'Sneha', 103);
+
+---------------------------------------------------
+-- Insert sample records into Address
+---------------------------------------------------
+
+INSERT INTO Address VALUES
+('HR', 'Delhi'),
+('IT', 'Mumbai'),
+('Finance', 'Pune'),
+('Marketing', 'Chennai');
+
+---------------------------------------------------
+-- i) Display department location where Ram works
+---------------------------------------------------
+
+SELECT A.Dept_location
+FROM Emp E
+JOIN Dept D
+ON E.Dept_no = D.Dept_no
+JOIN Address A
+ON D.Dept_name = A.Dept_name
+WHERE E.Emp_name = 'Ram';
+
+---------------------------------------------------
+-- ii) Create a view for total employees
+-- in each department in ascending order
+---------------------------------------------------
+
+CREATE VIEW Dept_Employee_Count AS
+SELECT D.Dept_name,
+COUNT(E.Emp_no) AS Total_Employees
+FROM Dept D
+LEFT JOIN Emp E
+ON D.Dept_no = E.Dept_no
+GROUP BY D.Dept_name
+ORDER BY Total_Employees ASC;
+
+---------------------------------------------------
+-- iii) Find department where no employee works
+---------------------------------------------------
+
+SELECT D.Dept_name
+FROM Dept D
+LEFT JOIN Emp E
+ON D.Dept_no = E.Dept_no
+WHERE E.Emp_no IS NULL;

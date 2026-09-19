@@ -1,0 +1,53 @@
+create table student(
+S_id int primary key,
+name varchar(50) not null,
+email varchar(50) unique,
+age int check(age>=18));
+
+create table course(
+course_id int primary key,
+course_name varchar(50),
+S_id int,
+Foreign key(S_id) References student(S_id)
+);
+
+
+insert into student values
+(1,'Rehan','rehan@gmail.com',19),
+(2,'Kaif','kaif@gmail.com',20),
+(3,'Prashant','prashu@gmail.com',25),
+(4,'Ajay','ajay@gmail.com',18),
+(5,'Raj','raj@gmail.com',29);
+
+
+insert into course values
+(101,'Python',1),
+(102,'Java',2),
+(103,'Python',3),
+(104,'HTML',4),
+(105,'SQL',5);
+
+
+select * from student;
+
+
+select * from course;
+
+
+alter table student
+add result varchar(20);
+
+
+select * from student;
+
+
+rename table student to tcoer_student;
+
+
+select * from tcoer_student;
+
+
+truncate table course;
+
+
+drop table course;

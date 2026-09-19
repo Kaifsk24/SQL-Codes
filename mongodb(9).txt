@@ -1,0 +1,116 @@
+// Create database
+use CollegeDB
+
+//---------------------------------------------------
+// Create students collection and insert documents
+//---------------------------------------------------
+
+db.students.insertMany([
+{
+_id: 1,
+name: "Amit",
+age: 20,
+course: "Computer Science",
+marks: 85
+},
+{
+_id: 2,
+name: "Sneha",
+age: 19,
+course: "Information Technology",
+marks: 72
+},
+{
+_id: 3,
+name: "Rahul",
+age: 21,
+course: "Computer Science",
+marks: 90
+},
+{
+_id: 4,
+name: "Priya",
+age: 18,
+course: "Electronics",
+marks: 35
+},
+{
+_id: 5,
+name: "Karan",
+age: 22,
+course: "Computer Science",
+marks: 65
+}
+])
+
+//---------------------------------------------------
+// a) Insert multiple documents using single query
+//---------------------------------------------------
+
+// Already done using insertMany()
+
+//---------------------------------------------------
+// b) Retrieve all documents
+//---------------------------------------------------
+
+db.students.find()
+
+//---------------------------------------------------
+// c) Find students with marks greater than 70
+//---------------------------------------------------
+
+db.students.find(
+{ marks: { $gt: 70 } }
+)
+
+//---------------------------------------------------
+// d) Students whose course is 'Computer Science'
+// AND marks > 75
+//---------------------------------------------------
+
+db.students.find(
+{
+$and: [
+{ course: "Computer Science" },
+{ marks: { $gt: 75 } }
+]
+}
+)
+
+//---------------------------------------------------
+// e) Students whose age < 20 OR marks > 80
+//---------------------------------------------------
+
+db.students.find(
+{
+$or: [
+{ age: { $lt: 20 } },
+{ marks: { $gt: 80 } }
+]
+}
+)
+
+//---------------------------------------------------
+// f) Update marks of student named 'Amit'
+//---------------------------------------------------
+
+db.students.updateOne(
+{ name: "Amit" },
+{ $set: { marks: 95 } }
+)
+
+//---------------------------------------------------
+// g) Delete students whose marks are less than 40
+//---------------------------------------------------
+
+db.students.deleteMany(
+{ marks: { $lt: 40 } }
+)
+
+//---------------------------------------------------
+// h) Delete student whose name is 'Sneha'
+//---------------------------------------------------
+
+db.students.deleteOne(
+{ name: "Sneha" }
+)

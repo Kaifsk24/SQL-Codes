@@ -1,0 +1,97 @@
+-- Create Student table
+CREATE TABLE Student (
+student_id INT PRIMARY KEY,
+name VARCHAR(50) NOT NULL,
+email VARCHAR(100) UNIQUE,
+age INT CHECK (age > 18)
+);
+
+-- Create Course table
+CREATE TABLE Course (
+course_id INT PRIMARY KEY,
+course_name VARCHAR(50) NOT NULL,
+credits INT CHECK (credits BETWEEN 1 AND 5)
+);
+
+-- Create Enrollment table
+CREATE TABLE Enrollment (
+enroll_id INT PRIMARY KEY,
+student_id INT,
+course_id INT,
+FOREIGN KEY (student_id) REFERENCES Student(student_id),
+FOREIGN KEY (course_id) REFERENCES Course(course_id)
+);
+
+---------------------------------------------------
+-- a) Insert records into Student table
+---------------------------------------------------
+
+INSERT INTO Student VALUES
+(1, 'Ali', 'ali@gmail.com', 20),
+(2, 'Sara', 'sara@gmail.com', 22),
+(3, 'John', 'john@gmail.com', 19);
+
+---------------------------------------------------
+-- b) Insert records into Course table
+---------------------------------------------------
+
+INSERT INTO Course VALUES
+(101, 'Database', 4),
+(102, 'Web Development', 5);
+
+---------------------------------------------------
+-- c) Insert records into Enrollment table
+---------------------------------------------------
+
+INSERT INTO Enrollment VALUES
+(1, 1, 101),
+(2, 2, 102),
+(3, 3, 101);
+
+---------------------------------------------------
+-- d) Alter Student table
+-- Add phone column with UNIQUE constraint
+---------------------------------------------------
+
+ALTER TABLE Student
+ADD phone VARCHAR(15) UNIQUE;
+
+---------------------------------------------------
+-- e) Modify Course table credits constraint
+-- Allow values between 1 and 6
+---------------------------------------------------
+
+-- First drop old constraint
+ALTER TABLE Course
+DROP CONSTRAINT course_chk;
+
+-- Add new constraint
+ALTER TABLE Course
+ADD CONSTRAINT course_chk
+CHECK (credits BETWEEN 1 AND 6);
+
+---------------------------------------------------
+-- f) Rename Student table to Students
+---------------------------------------------------
+
+ALTER TABLE Student
+RENAME TO Students;
+
+---------------------------------------------------
+-- g) Remove all records from Enrollment table
+---------------------------------------------------
+
+TRUNCATE TABLE Enrollment;
+
+---------------------------------------------------
+-- h) Delete Course table
+---------------------------------------------------
+
+DROP TABLE Course;
+
+---------------------------------------------------
+-- i) Query to drop a constraint from a table
+---------------------------------------------------
+
+ALTER TABLE Students
+DROP CONSTRAINT course_chk;

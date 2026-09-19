@@ -1,0 +1,24 @@
+CREATE TABLE circle (
+radius INT,
+area FLOAT
+);
+
+
+DELIMITER //
+CREATE PROCEDURE parea()
+BEGIN
+DECLARE r INT DEFAULT 2;
+DECLARE a FLOAT;
+WHILE r < 5 DO
+SET a = 3.14 * r * r;
+INSERT INTO circle VALUES (r, a);
+SET r = r + 1;
+END WHILE;
+END //
+DELIMITER ;
+
+
+CALL parea();
+
+
+SELECT * FROM circle;

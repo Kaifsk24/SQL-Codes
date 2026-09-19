@@ -1,0 +1,112 @@
+// Create database
+use CollegeDB
+
+//---------------------------------------------------
+// Create students collection and insert documents
+//---------------------------------------------------
+
+db.students.insertMany([
+{
+_id: 1,
+name: "Amit",
+department: "Computer Science",
+marks: 85,
+city: "Mumbai"
+},
+{
+_id: 2,
+name: "Sneha",
+department: "IT",
+marks: 72,
+city: "Pune"
+},
+{
+_id: 3,
+name: "Rahul",
+department: "Computer Science",
+marks: 90,
+city: "Mumbai"
+},
+{
+_id: 4,
+name: "Priya",
+department: "Electronics",
+marks: 65,
+city: "Delhi"
+},
+{
+_id: 5,
+name: "Karan",
+department: "IT",
+marks: 80,
+city: "Pune"
+}
+])
+
+//---------------------------------------------------
+// a) Calculate total marks for each department
+//---------------------------------------------------
+
+db.students.aggregate([
+{
+$group: {
+_id: "$department",
+totalMarks: { $sum: "$marks" }
+}
+}
+])
+
+//---------------------------------------------------
+// b) Find average marks in each department
+//---------------------------------------------------
+
+db.students.aggregate([
+{
+$group: {
+_id: "$department",
+averageMarks: { $avg: "$marks" }
+}
+}
+])
+
+//---------------------------------------------------
+// c) Display maximum marks in each department
+//---------------------------------------------------
+
+db.students.aggregate([
+{
+$group: {
+_id: "$department",
+maximumMarks: { $max: "$marks" }
+}
+}
+])
+
+//---------------------------------------------------
+// d) Count number of students in each city
+//---------------------------------------------------
+
+db.students.aggregate([
+{
+$group: {
+_id: "$city",
+totalStudents: { $sum: 1 }
+}
+}
+])
+
+//---------------------------------------------------
+// e) Create index on name field
+//---------------------------------------------------
+
+db.students.createIndex({ name: 1 })
+
+//---------------------------------------------------
+// f) Drop index from collection
+//---------------------------------------------------
+
+// Drop specific index
+db.students.dropIndex({ name: 1 })
+
+// OR drop all indexes except _id
+// db.students.dropIndexes()
